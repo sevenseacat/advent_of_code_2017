@@ -3,13 +3,32 @@ defmodule Advent.Day8 do
     input
     |> parse_input
     |> do_part1(%{})
-    |> Enum.max_by(fn {_, b} -> b end)
+    |> max_key_value
   end
 
-  def do_part1([], data), do: data
-  def do_part1([instruction | instructions], data) do
+  def part2(input) do
+    input
+    |> parse_input
+    |> do_part2(%{}, {nil, nil})
+  end
+
+  defp do_part1([], data), do: data
+  defp do_part1([instruction | instructions], data) do
     do_part1(instructions, apply_instruction(instruction, data))
   end
+
+  defp do_part2([], _, max), do: max
+  defp do_part2([instruction | instructions], data, {x1, y1}) do
+    new_data = apply_instruction(instruction, data)
+    {x2, y2} = max_key_value(new_data)
+    new_max = case y1 == nil || y2 > y1 do
+      true -> {x2, y2}
+      false -> {x1, y1}
+    end
+    do_part2(instructions, new_data, new_max)
+  end
+
+  defp max_key_value(map), do: Enum.max_by(map, fn {_, b} -> b end)
 
   @doc """
   iex> Day8.parse_input("b inc 5 if a > 1")
@@ -43,12 +62,17 @@ defmodule Advent.Day8 do
     |> check_condition(operand, value)
   end
 
-  defp check_condition(a, ">", b), do: a > b
-  defp check_condition(a, "<", b), do: a < b
-  defp check_condition(a, ">=", b), do: a >= b
-  defp check_condition(a, "<=", b), do: a <= b
-  defp check_condition(a, "!=", b), do: a != b
-  defp check_condition(a, "==", b), do: a == b
+  defp check_condition(a, operand, b) do
+    case operand do
+      ">"  -> a > b
+      "<"  -> a < b
+      ">=" -> a >= b
+      "<=" -> a <= b
+      "!=" -> a != b
+      "==" -> a == b
+      _    -> raise "unknown operator"
+    end
+  end
 
   defp apply_operation(a, "inc", b), do: a + b
   defp apply_operation(a, "dec", b), do: a - b

@@ -4,11 +4,10 @@ defmodule Advent.Day8Test do
   doctest Advent.Day8
 
   test "part 1" do
-    input = "b inc 5 if a > 1
-a inc 1 if b < 5
-c dec -10 if a >= 1
-c inc -20 if c == 10"
+    assert Day8.part1(File.read!("test/data/day_8")) == {"a", 1}
+  end
 
-    assert Day8.part1(input) == {"a", 1}
+  test "part 2" do
+    assert Day8.part2(File.read!("test/data/day_8")) == {"c", 10}
   end
 end
