@@ -1,21 +1,5 @@
-# Advent
+# Advent of Code 2017
 
-**TODO: Add description**
+[![Build Status](https://travis-ci.org/sevenseacat/advent_of_code_2017.svg?branch=master)](https://travis-ci.org/sevenseacat/advent_of_code_2017)
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `advent` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:advent, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/advent](https://hexdocs.pm/advent).
-
+My Elixir solutions for the [Advent of Code 2017](http://adventofcode.com/2017).
