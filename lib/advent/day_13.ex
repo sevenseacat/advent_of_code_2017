@@ -1,30 +1,20 @@
 defmodule Advent.Day13.Layer do
   alias __MODULE__
 
-  defstruct range: nil, position: 0, caught: false, dir: :down
+  defstruct range: nil, position: 0, caught: false
 
   def new([depth, range]) do
     {String.to_integer(depth), %Layer{range: String.to_integer(range)}}
   end
 
-  def move_sentry(%Layer{range: range, position: pos, dir: dir}=layer) do
-    new_pos = move(pos, dir)
-    {dir, new_pos} = case end_of_range?(range, new_pos) do
-      true ->
-        dir = change_dir(dir)
-        {dir, move(pos, dir)}
-      false -> {dir, new_pos}
-    end
-    %{ layer | dir: dir, position: new_pos }
+  def set_position(%Layer{range: range}=layer, offset) do
+    # Remove loops in the process, ie. if offset is 8 and range is 3, then the offset can be reduced
+    # by 4 because after 4 moves, the sentry will be back at its starting position
+    offset = rem(offset, range * 2 - 2)
+    new_pos = if offset >= range, do: offset - 2 - (2 * (offset - range)), else: offset
+
+    %{ layer | position: new_pos }
   end
-
-  defp move(pos, :down), do: pos+1
-  defp move(pos, :up),   do: pos-1
-
-  defp end_of_range?(range, new_pos), do: new_pos < 0 || new_pos == range
-
-  defp change_dir(:down), do: :up
-  defp change_dir(:up),   do: :down
 end
 
 defmodule Advent.Day13 do
@@ -39,7 +29,7 @@ defmodule Advent.Day13 do
     layer_count = Map.keys(input) |> Enum.max
 
     input
-    |> run_gauntlet(layer_count)
+    |> move(0, 0, layer_count)
     |> Enum.filter(fn {_, v} -> v.caught end)
     |> Enum.reduce(0, fn {k, v}, acc -> acc + k * v.range end)
   end
@@ -50,30 +40,26 @@ defmodule Advent.Day13 do
   10
   """
   def part2(input) do
-    layer_count = Map.keys(input) |> Enum.max
-
-    Enum.reduce_while(0..5000000, input, fn i, input ->
-      if input |> run_gauntlet(layer_count) |> Enum.all?(fn {_, v} -> v.caught == false end) do
-        {:halt, i}
-      else
-        if rem(i, 1000) == 0 do
-          IO.inspect i
-        end
-        {:cont, move_sentries(input)}
-      end
-    end)
+    do_part2(input, 0, Map.keys(input) |> Enum.max)
   end
 
-  defp run_gauntlet(input, layer_count) do
-    move(input, 0, layer_count)
+  def do_part2(input, offset, layer_count) do
+    if offset > 0 && rem(offset, 1000) == 0, do: IO.puts(offset)
+    new_input = move(input, offset, 0, layer_count)
+
+    if Enum.any?(new_input, fn {_, v} -> v.caught end) do
+      do_part2(input, offset+1, layer_count)
+    else
+      offset
+    end
   end
 
-  def move(input, current, last) when current > last, do: input
-  def move(input, current, last) do
+  def move(input, _, current, last) when current > last, do: input
+  def move(input, offset, current, last) do
     input
+    |> move_sentries(current + offset)
     |> mark_caught!(current)
-    |> move_sentries
-    |> move(current+1, last)
+    |> move(offset, current+1, last)
   end
 
   defp mark_caught!(input, current) do
@@ -83,9 +69,9 @@ defmodule Advent.Day13 do
     end
   end
 
-  defp move_sentries(input) do
+  defp move_sentries(input, offset) do
     input
-    |> Enum.map(fn {k, v} -> {k, Layer.move_sentry(v)} end)
+    |> Enum.map(fn {k, v} -> {k, Layer.set_position(v, offset)} end)
     |> Enum.into(%{})
   end
 
