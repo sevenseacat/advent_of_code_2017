@@ -1,34 +1,40 @@
 defmodule Advent.Day15.Generator do
-  def new(initial, factor) do
-    Stream.unfold(initial, &({&1, next_val(&1, factor)}))
+  def new(initial, factor, divisor \\ nil) do
+    Stream.unfold(initial, &({&1, next_val(&1, factor, divisor)}))
   end
 
   @doc """
-  iex> Generator.next_val(65, 16807)
+  iex> Generator.next_val(65, 16807, nil)
   1092455
 
-  iex> Generator.next_val(1092455, 16807)
+  iex> Generator.next_val(1092455, 16807, nil)
   1181022009
 
-  iex> Generator.next_val(1181022009, 16807)
+  iex> Generator.next_val(1181022009, 16807, nil)
   245556042
 
-  iex> Generator.next_val(8921, 48271)
+  iex> Generator.next_val(8921, 48271, nil)
   430625591
 
-  iex> Generator.next_val(430625591, 48271)
+  iex> Generator.next_val(430625591, 48271, nil)
   1233683848
 
-  iex> Generator.next_val(1233683848, 48271)
+  iex> Generator.next_val(1233683848, 48271, nil)
   1431495498
   """
-  def next_val(val, factor) do
+  def next_val(val, factor, nil) do
     rem(val * factor, 2_147_483_647)
+  end
+
+  def next_val(val, factor, divisor) do
+    val = rem(val * factor, 2_147_483_647)
+    if rem(val, divisor) != 0, do: next_val(val, factor, divisor), else: val
   end
 end
 
 defmodule Advent.Day15 do
-  @pair_count 40_000_000
+  @part_1_pair_count 40_000_000
+  @part_2_pair_count 5_000_000
   @a_factor 16807
   @b_factor 48271
 
@@ -40,9 +46,23 @@ defmodule Advent.Day15 do
   """
   def part1(a_initial, b_initial) do
     IO.puts "Calculating A hashes..."
-    a_values = Generator.new(a_initial, @a_factor) |> Enum.take(@pair_count)
+    a_values = Generator.new(a_initial, @a_factor) |> Enum.take(@part_1_pair_count)
     IO.puts "Calculating B hashes..."
-    b_values = Generator.new(b_initial, @b_factor) |> Enum.take(@pair_count)
+    b_values = Generator.new(b_initial, @b_factor) |> Enum.take(@part_1_pair_count)
+
+    IO.puts "Comparing hashes..."
+    count_matches(tl(a_values), tl(b_values), 0)
+  end
+
+  @doc """
+  iex> Day15.part2(65, 8921)
+  309
+  """
+  def part2(a_initial, b_initial) do
+    IO.puts "Calculating A hashes..."
+    a_values = Generator.new(a_initial, @a_factor, 4) |> Enum.take(@part_2_pair_count)
+    IO.puts "Calculating B hashes..."
+    b_values = Generator.new(b_initial, @b_factor, 8) |> Enum.take(@part_2_pair_count)
 
     IO.puts "Comparing hashes..."
     count_matches(tl(a_values), tl(b_values), 0)
