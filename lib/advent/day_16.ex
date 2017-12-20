@@ -8,6 +8,30 @@ defmodule Advent.Day16 do
   end
 
   @doc """
+  iex> Day16.part2("abcde", [{:spin, 1}, {:exchange, 3, 4}, {:partner, "e", "b"}], 2)
+  "ceadb"
+  """
+  def part2(programs, moves, count) do
+    programs
+    |> String.codepoints
+    |> do_skippy(moves, 0, count, [])
+    |> List.to_string
+  end
+
+  # Keep a track of all of the dance outputs seen - if there's a loop in the outputs we can
+  # drastically reduce the amount of work required
+  def do_skippy(programs, _, count, count, _), do: programs
+  def do_skippy(programs, moves, count, max_count, seen) do
+    if programs in seen do
+      offset = Enum.find_index(seen, &(&1 == programs)) + 1
+      leftovers = rem(max_count - count, offset)
+      Enum.at(seen, offset - leftovers - 1)
+    else
+      do_skippy(dance(programs, moves), moves, count+1, max_count, [programs | seen])
+    end
+  end
+
+  @doc """
   iex> Day16.dance(["a", "b", "c", "d", "e"], [{:spin, 3}])
   ["c", "d", "e", "a", "b"]
 
@@ -42,9 +66,6 @@ defmodule Advent.Day16 do
   end
 
   @doc """
-  File.read!("lib/advent/data/day_16") |> Day16.parse_input |> Day16.part1
-
-
   iex> Day16.parse_input("s1,x3/4,pe/b")
   [{:spin, 1}, {:exchange, 3, 4}, {:partner, "e", "b"}]
   """
