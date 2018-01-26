@@ -99,7 +99,7 @@ defmodule Advent.Day21 do
   end
 
   def reassemble(grid) do
-    chunk_size = if rem(length(grid), 2) == 0, do: 2, else: 3
+    chunk_size = :math.sqrt(length(grid)) |> trunc
 
     grid
     |> Enum.chunk_every(chunk_size)
