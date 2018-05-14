@@ -1,25 +1,25 @@
 defmodule Advent.Day2 do
   def part1(input) do
     input
-    |> String.trim
+    |> String.trim()
     |> String.split("\n")
     |> Enum.map(&to_ints/1)
     |> Enum.map(&part_1_line_value/1)
-    |> Enum.sum
+    |> Enum.sum()
   end
 
   def part2(input) do
     input
-    |> String.trim
+    |> String.trim()
     |> String.split("\n")
     |> Enum.map(&to_ints/1)
     |> Enum.map(&part_2_line_value/1)
-    |> Enum.sum
+    |> Enum.sum()
   end
 
   defp to_ints(line) do
     line
-    |> String.split
+    |> String.split()
     |> Enum.map(&String.to_integer/1)
   end
 
@@ -29,7 +29,7 @@ defmodule Advent.Day2 do
 
   defp part_2_line_value(line) do
     line
-    |> Enum.sort
+    |> Enum.sort()
     |> find_divisible([])
   end
 

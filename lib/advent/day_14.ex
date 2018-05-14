@@ -8,12 +8,12 @@ defmodule Advent.Day14 do
   29
   """
   def part1(input, size) do
-    (size-1)..0
-    |> Enum.to_list
-    |> Stream.map(&(calculate_hash(input, &1)))
-    |> Enum.map(&(to_bits(&1, div(size, 4))))
-    |> List.flatten
-    |> Enum.sum
+    (size - 1)..0
+    |> Enum.to_list()
+    |> Stream.map(&calculate_hash(input, &1))
+    |> Enum.map(&to_bits(&1, div(size, 4)))
+    |> List.flatten()
+    |> Enum.sum()
   end
 
   @doc """
@@ -24,13 +24,13 @@ defmodule Advent.Day14 do
   12
   """
   def part2(input, size) do
-    list = Enum.to_list 0..size-1
+    list = Enum.to_list(0..(size - 1))
 
     list
-    |> Stream.map(&(calculate_hash(input, &1)))
-    |> Stream.map(&(to_bits(&1, div(size, 4))))
+    |> Stream.map(&calculate_hash(input, &1))
+    |> Stream.map(&to_bits(&1, div(size, 4)))
     |> Stream.zip(list)
-    |> Enum.reduce([], &(convert_to_points(&1, &2, 0)))
+    |> Enum.reduce([], &convert_to_points(&1, &2, 0))
     |> count_groups(0)
   end
 
@@ -40,10 +40,10 @@ defmodule Advent.Day14 do
   """
   def to_bits(string, size) do
     string
-    |> String.codepoints
+    |> String.codepoints()
     |> Enum.take(size)
     |> Enum.map(&bits/1)
-    |> List.flatten
+    |> List.flatten()
   end
 
   defp bits(char) do
@@ -68,22 +68,25 @@ defmodule Advent.Day14 do
   end
 
   defp count_groups([], count), do: count
+
   defp count_groups([elem | rest], count) do
-    { _group, not_adjacent } = split_out_group([elem], [], rest)
-    count_groups(not_adjacent, count+1)
+    {_group, not_adjacent} = split_out_group([elem], [], rest)
+    count_groups(not_adjacent, count + 1)
   end
 
   defp split_out_group([], seen, list), do: {seen, list}
+
   defp split_out_group([{x, y} | coords], seen, list) do
-    possible_adjacent = [{x+1, y}, {x, y+1}, {x-1, y}, {x, y-1}]
-    {adjacent, rest} = Enum.split_with(list, &(Enum.member?(possible_adjacent, &1)))
-    split_out_group(adjacent ++ coords, [{x, y}|seen], rest)
+    possible_adjacent = [{x + 1, y}, {x, y + 1}, {x - 1, y}, {x, y - 1}]
+    {adjacent, rest} = Enum.split_with(list, &Enum.member?(possible_adjacent, &1))
+    split_out_group(adjacent ++ coords, [{x, y} | seen], rest)
   end
 
-  defp convert_to_points({[], _}, acc, _), do: acc |> Enum.reverse
+  defp convert_to_points({[], _}, acc, _), do: acc |> Enum.reverse()
+
   defp convert_to_points({[key | keys], index}, acc, counter) do
-    new_acc = if key == 1, do: [{counter, index}|acc], else: acc
-    convert_to_points({keys, index}, new_acc, counter+1)
+    new_acc = if key == 1, do: [{counter, index} | acc], else: acc
+    convert_to_points({keys, index}, new_acc, counter + 1)
   end
 
   defp calculate_hash(input, suffix) do

@@ -5,7 +5,7 @@ defmodule Advent.Day17 do
   """
   def part1(steps, limit \\ 2017) do
     {list, final_position} = do_part1({[0], 0}, 1, steps, limit)
-    Enum.at(list, final_position+1)
+    Enum.at(list, final_position + 1)
   end
 
   @doc """
@@ -17,21 +17,23 @@ defmodule Advent.Day17 do
   end
 
   def do_part2(after_zero, _, index, limit, _) when index > limit, do: after_zero
+
   def do_part2(after_zero, position, index, limit, step) do
     # The length of the list is the number being inserted.
-    new_position = rem(position+step, index)+1
+    new_position = rem(position + step, index) + 1
     after_zero = if new_position == 1, do: index, else: after_zero
-    do_part2(after_zero, new_position, index+1, limit, step)
+    do_part2(after_zero, new_position, index + 1, limit, step)
   end
 
   def iterate_for_zero([0, b | _rest]), do: b
-  def iterate_for_zero([_a, b | rest]), do: iterate_for_zero([b|rest])
+  def iterate_for_zero([_a, b | rest]), do: iterate_for_zero([b | rest])
 
   defp do_part1(state, index, _, limit) when index > limit, do: state
+
   defp do_part1(state, index, steps, limit) do
     state
     |> insert(index, steps)
-    |> do_part1(index+1, steps, limit)
+    |> do_part1(index + 1, steps, limit)
   end
 
   @doc """
@@ -58,7 +60,7 @@ defmodule Advent.Day17 do
   """
   def insert({list, position}, number, step) do
     # The length of the list is the number being inserted.
-    new_position = rem(position+step, number)+1
+    new_position = rem(position + step, number) + 1
     {List.insert_at(list, new_position, number), new_position}
   end
 end

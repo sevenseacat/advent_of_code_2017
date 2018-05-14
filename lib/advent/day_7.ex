@@ -13,30 +13,34 @@ defmodule Advent.Day7.Program do
 
   def unbalanced_child_of(program, programs) do
     case balanced?(program, programs) do
-      true -> nil
+      true ->
+        nil
+
       false ->
         children = program_refs(program.holding, programs)
-        Enum.find(children, &(odd_stack_weight(&1, children)))
+        Enum.find(children, &odd_stack_weight(&1, children))
     end
   end
 
   # A program is balanced if all of the programs it directly holds have the same stack weight.
   def balanced?(%Program{holding: []}, _), do: true
+
   def balanced?(%Program{holding: holding}, programs) do
-    weights = program_refs(holding, programs)
-    |> Enum.map(&(Map.get(&1, :stack_weight)))
-    |> Enum.uniq
+    weights =
+      program_refs(holding, programs)
+      |> Enum.map(&Map.get(&1, :stack_weight))
+      |> Enum.uniq()
 
     length(weights) == 1
   end
 
   def program_refs(names, programs) do
-    Enum.map(names, &(find(&1, programs)))
+    Enum.map(names, &find(&1, programs))
   end
 
   def siblings(program, programs) do
     programs
-    |> Enum.find(&(Enum.member?(&1.holding, program.name)))
+    |> Enum.find(&Enum.member?(&1.holding, program.name))
     |> Map.get(:holding)
     |> Enum.reject(&(&1 == program.name))
     |> program_refs(programs)
@@ -52,11 +56,11 @@ defmodule Advent.Day7 do
 
   def part1(programs) do
     programs
-    |> Enum.find(&(Program.held_by_noone?(&1, programs)))
+    |> Enum.find(&Program.held_by_noone?(&1, programs))
   end
 
   def part2(programs) do
-    programs = Enum.map(programs, &(assign_stack_weight(&1, programs)))
+    programs = Enum.map(programs, &assign_stack_weight(&1, programs))
     root = part1(programs)
 
     leaf = find_leaf(root, programs)
@@ -72,17 +76,19 @@ defmodule Advent.Day7 do
   end
 
   def parse_input(input) do
-    programs = input
-    |> String.trim
-    |> String.split("\n")
-    |> Enum.map(&convert_to_program/1)
+    programs =
+      input
+      |> String.trim()
+      |> String.split("\n")
+      |> Enum.map(&convert_to_program/1)
 
     programs
-    |> Enum.map(&(assign_stack_weight(&1, programs)))
+    |> Enum.map(&assign_stack_weight(&1, programs))
   end
 
   defp convert_to_program(input) do
     data = Regex.named_captures(~r/(?<name>\w+) \((?<weight>\d+)\)( -> (?<holding>.+))*/, input)
+
     %Program{
       name: data["name"],
       weight: String.to_integer(data["weight"]),
@@ -95,17 +101,20 @@ defmodule Advent.Day7 do
   end
 
   defp calculate_stack_weight(%Program{weight: weight, holding: []}, _), do: weight
+
   defp calculate_stack_weight(%Program{weight: weight, holding: holding}, programs) do
-    weight + (holding
-    |> Stream.map(&(Program.find(&1, programs)))
-    |> Stream.map(&(calculate_stack_weight(&1, programs)))
-    |> Enum.sum)
+    weight +
+      (holding
+       |> Stream.map(&Program.find(&1, programs))
+       |> Stream.map(&calculate_stack_weight(&1, programs))
+       |> Enum.sum())
   end
 
   defp calculate_difference(program, siblings) do
-    difference = siblings
-    |> Enum.map(&(&1.stack_weight - program.stack_weight))
-    |> Enum.find(&(&1 != 0))
+    difference =
+      siblings
+      |> Enum.map(&(&1.stack_weight - program.stack_weight))
+      |> Enum.find(&(&1 != 0))
 
     {program, difference}
   end

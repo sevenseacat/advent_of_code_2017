@@ -21,35 +21,36 @@ defmodule Advent.Day18 do
   defp perform_command({:add, one, two}, index, data, sound) do
     two = v(data, two)
     data = Map.update(data, one, two, &(&1 + two))
-    {index+1, data, sound}
+    {index + 1, data, sound}
   end
 
   defp perform_command({:assign, one, two}, index, data, sound) do
     two = v(data, two)
     data = Map.put(data, one, two)
-    {index+1, data, sound}
+    {index + 1, data, sound}
   end
 
   defp perform_command({:multiply, one, two}, index, data, sound) do
     two = v(data, two)
     data = Map.update(data, one, 0, &(&1 * two))
-    {index+1, data, sound}
+    {index + 1, data, sound}
   end
 
   defp perform_command({:modulo, one, two}, index, data, sound) do
     two = v(data, two)
-    data = Map.update(data, one, 0, &(rem(&1, two)))
-    {index+1, data, sound}
+    data = Map.update(data, one, 0, &rem(&1, two))
+    {index + 1, data, sound}
   end
 
-  defp perform_command({:sound, one}, index, data, _), do: {index+1, data, v(data, one)}
+  defp perform_command({:sound, one}, index, data, _), do: {index + 1, data, v(data, one)}
 
   defp perform_command({:recover, one}, index, data, sound) do
     val = v(data, one)
+
     if val != 0 do
       raise Integer.to_string(sound)
     else
-      {index+1, data, sound}
+      {index + 1, data, sound}
     end
   end
 
@@ -57,7 +58,7 @@ defmodule Advent.Day18 do
     if v(data, one) > 0 do
       {index + v(data, two), data, sound}
     else
-      {index+1, data, sound}
+      {index + 1, data, sound}
     end
   end
 
@@ -77,31 +78,34 @@ defmodule Advent.Day18 do
   ...>jgz a -2")
   [{:assign, :a, 1}, {:add, :a, 2}, {:multiply, :a, :a}, {:modulo, :a, 5}, {:sound, :a},
    {:assign, :a, 0}, {:recover, :a}, {:jump, :a, -1}, {:assign, :a, 1}, {:jump, :a, -2}]
-   """
+  """
   def parse_input(input) do
     input
-    |> String.trim
+    |> String.trim()
     |> String.split("\n")
-    |> Enum.map(&(String.split(&1, " ")))
+    |> Enum.map(&String.split(&1, " "))
     |> Enum.map(&parse_line/1)
   end
 
-  defp parse_line(["snd", one]), do: { :sound, String.to_atom(one) }
-  defp parse_line(["rcv", one]), do: { :recover, String.to_atom(one) }
+  defp parse_line(["snd", one]), do: {:sound, String.to_atom(one)}
+  defp parse_line(["rcv", one]), do: {:recover, String.to_atom(one)}
+
   defp parse_line([cmd, one, two]) do
     one = String.to_atom(one)
-    two = try do
-      String.to_integer(two)
-    rescue
-      ArgumentError -> String.to_atom(two)
-    end
+
+    two =
+      try do
+        String.to_integer(two)
+      rescue
+        ArgumentError -> String.to_atom(two)
+      end
 
     case cmd do
-      "add" -> { :add, one, two }
-      "mul" -> { :multiply, one, two }
-      "mod" -> { :modulo, one, two }
-      "set" -> { :assign, one, two }
-      "jgz" -> { :jump, one, two }
+      "add" -> {:add, one, two}
+      "mul" -> {:multiply, one, two}
+      "mod" -> {:modulo, one, two}
+      "set" -> {:assign, one, two}
+      "jgz" -> {:jump, one, two}
     end
   end
 end

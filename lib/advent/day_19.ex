@@ -12,9 +12,9 @@ defmodule Advent.Day19 do
   def part1(input) do
     input
     |> find_starting_point
-    |> trace_route(:down, input, [], &(add_marker(&1, &2)))
-    |> Enum.reverse
-    |> List.to_string
+    |> trace_route(:down, input, [], &add_marker(&1, &2))
+    |> Enum.reverse()
+    |> List.to_string()
   end
 
   @doc """
@@ -30,7 +30,7 @@ defmodule Advent.Day19 do
   def part2(input) do
     input
     |> find_starting_point
-    |> trace_route(:down, input, 0, &(count(&1, &2)))
+    |> trace_route(:down, input, 0, &count(&1, &2))
   end
 
   defp find_starting_point(input) do
@@ -41,8 +41,9 @@ defmodule Advent.Day19 do
 
   defp trace_route(coords, direction, input, tracker, func) do
     marker = Map.fetch!(input, coords)
+
     case next_point(coords, marker, direction, input) do
-      nil ->                 func.(marker, tracker)
+      nil -> func.(marker, tracker)
       {coords, direction} -> trace_route(coords, direction, input, func.(marker, tracker), func)
     end
   end
@@ -56,23 +57,26 @@ defmodule Advent.Day19 do
   end
 
   def turn({x, y}, dir, input) do
-    possibles = if dir in [:left, :right] do
-      [{{x, y+1}, :down}, {{x, y-1}, :up}]
-    else
-      [{{x-1, y}, :left}, {{x+1, y}, :right}]
-    end
+    possibles =
+      if dir in [:left, :right] do
+        [{{x, y + 1}, :down}, {{x, y - 1}, :up}]
+      else
+        [{{x - 1, y}, :left}, {{x + 1, y}, :right}]
+      end
 
     possibles
     |> Enum.find(fn {coords, _} -> Map.has_key?(input, coords) end)
   end
 
   def go_straight({x, y}, dir, input) do
-    {coords, _} = point = case dir do
-      :left -> {{x-1, y}, :left}
-      :right -> {{x+1, y}, :right}
-      :up -> {{x, y-1}, :up}
-      :down -> {{x, y+1}, :down}
-    end
+    {coords, _} =
+      point =
+      case dir do
+        :left -> {{x - 1, y}, :left}
+        :right -> {{x + 1, y}, :right}
+        :up -> {{x, y - 1}, :up}
+        :down -> {{x, y + 1}, :down}
+      end
 
     if Map.has_key?(input, coords), do: point, else: nil
   end
@@ -81,7 +85,7 @@ defmodule Advent.Day19 do
     if marker in ["-", "|", "+"], do: seen, else: [marker | seen]
   end
 
-  def count(_, count), do: count+1
+  def count(_, count), do: count + 1
 
   @doc """
   This returns a map, but maps do not guaranteed key order, so check the sorted value (a list of tuples).
@@ -97,22 +101,24 @@ defmodule Advent.Day19 do
   """
   def parse_input(input) do
     input
-    |> String.trim_trailing
+    |> String.trim_trailing()
     |> String.split("\n")
     |> Enum.reduce({%{}, 0}, fn row, {map, y} ->
-        map = row_elems_to_map(map, String.codepoints(row), 0, y)
-      {map, y+1}
+      map = row_elems_to_map(map, String.codepoints(row), 0, y)
+      {map, y + 1}
     end)
     |> elem(0)
   end
 
   defp row_elems_to_map(map, [], _, _), do: map
+
   defp row_elems_to_map(map, [char | chars], x, y) when char == "" or char == " " do
-    row_elems_to_map(map, chars, x+1, y)
+    row_elems_to_map(map, chars, x + 1, y)
   end
+
   defp row_elems_to_map(map, [char | chars], x, y) do
     map
     |> Map.put({x, y}, char)
-    |> row_elems_to_map(chars, x+1, y)
+    |> row_elems_to_map(chars, x + 1, y)
   end
 end

@@ -16,9 +16,10 @@ defmodule Advent.Day5 do
   end
 
   defp do_jumps(_, position, length, move_no, _) when position >= length, do: move_no
+
   defp do_jumps(input, position, length, move_no, fun) do
     {next_input, next_position} = next_jump(input, position, fun)
-    do_jumps(next_input, next_position, length, move_no+1, fun)
+    do_jumps(next_input, next_position, length, move_no + 1, fun)
   end
 
   @doc """
@@ -44,11 +45,12 @@ defmodule Advent.Day5 do
     {new_input, position + move}
   end
 
-  def add_one(move), do: move+1
+  def add_one(move), do: move + 1
+
   def add_or_subtract(move) do
     case move >= 3 do
-      true -> move-1
-      false -> move+1
+      true -> move - 1
+      false -> move + 1
     end
   end
 end

@@ -31,16 +31,18 @@ defmodule Advent.Day9 do
 
   # Group terminators
   def do_parts(["{" | rest], {:group, level}, {score, cancelled}) do
-    do_parts(rest, {:group, level+1}, {score+level+1, cancelled})
+    do_parts(rest, {:group, level + 1}, {score + level + 1, cancelled})
   end
+
   def do_parts(["}" | rest], {:group, level}, results) do
-    do_parts(rest, {:group, level-1}, results)
+    do_parts(rest, {:group, level - 1}, results)
   end
 
   # Garbage terminators
   def do_parts(["<" | rest], {:group, level}, results) do
     do_parts(rest, {:garbage, level}, results)
   end
+
   def do_parts([">" | rest], {:garbage, level}, results) do
     do_parts(rest, {:group, level}, results)
   end
@@ -49,10 +51,12 @@ defmodule Advent.Day9 do
   def do_parts(["!", _ | rest], state, results) do
     do_parts(rest, state, results)
   end
-  def do_parts([_ | rest], {:group, _}=state, results) do
+
+  def do_parts([_ | rest], {:group, _} = state, results) do
     do_parts(rest, state, results)
   end
-  def do_parts([_ | rest], {:garbage, _}=state, {score, cancelled}) do
-    do_parts(rest, state, {score, cancelled+1})
+
+  def do_parts([_ | rest], {:garbage, _} = state, {score, cancelled}) do
+    do_parts(rest, state, {score, cancelled + 1})
   end
 end

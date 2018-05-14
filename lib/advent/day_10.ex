@@ -34,28 +34,30 @@ defmodule Advent.Day10 do
   """
   def part2(input) do
     input = parse_part2_input(input)
+
     {Enum.to_list(0..255), 0, 0, input}
     |> do_part2(input, 64)
     |> elem(0)
     |> Stream.chunk_every(16)
     |> Enum.map(&xor_everything!/1)
-    |> Enum.join
-    |> String.downcase
+    |> Enum.join()
+    |> String.downcase()
   end
 
   defp do_part2(data, _, 0), do: data
+
   defp do_part2(data, input, times) do
     data
     |> do_parts
     |> put_elem(3, input)
-    |> do_part2(input, times-1)
+    |> do_part2(input, times - 1)
   end
 
   defp xor_everything!([head | rest]), do: xor(rest, head)
   defp xor([], result), do: result |> Integer.to_string(16) |> String.pad_leading(2, "0")
   defp xor([head | rest], result), do: xor(rest, bxor(head, result))
 
-  defp do_parts({_, _, _, []}=data), do: data
+  defp do_parts({_, _, _, []} = data), do: data
   defp do_parts(data), do: data |> knot |> do_parts
 
   @doc """
@@ -100,9 +102,13 @@ defmodule Advent.Day10 do
   There has to be a simpler way to calculate the opposite value...
   """
   def reverse(list, _, position, 0, _), do: {list, position}
+
   def reverse(list, orig_list, position, length, orig_length) do
     list
-    |> List.replace_at(position, Enum.at(orig_list, rem(position + length - (orig_length - length) -1, length(list))))
+    |> List.replace_at(
+      position,
+      Enum.at(orig_list, rem(position + length - (orig_length - length) - 1, length(list)))
+    )
     |> reverse(orig_list, rem(position + 1, length(list)), length - 1, orig_length)
   end
 end

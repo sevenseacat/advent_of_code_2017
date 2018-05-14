@@ -9,7 +9,7 @@ defmodule Advent.Day6 do
     new_input = redistribute(input)
 
     case Enum.member?(seen_so_far, new_input) do
-      true -> {new_input, count, Enum.find_index(seen_so_far, &(&1 == new_input))+1}
+      true -> {new_input, count, Enum.find_index(seen_so_far, &(&1 == new_input)) + 1}
       false -> parts(new_input, [new_input | seen_so_far], count + 1)
     end
   end
@@ -36,16 +36,18 @@ defmodule Advent.Day6 do
     banks = List.replace_at(banks, bank, 0)
 
     # So we are now distributing max_blocks over the banks, starting with bank+1.
-    put_blocks(banks, bank+1, max_blocks, length(banks))
+    put_blocks(banks, bank + 1, max_blocks, length(banks))
   end
 
   defp put_blocks(banks, _, 0, _), do: banks
+
   defp put_blocks(banks, bank_no, blocks, bank_count) when bank_no == bank_count do
     put_blocks(banks, 0, blocks, bank_count)
   end
+
   defp put_blocks(banks, bank_no, blocks, bank_count) do
     banks
-    |> List.update_at(bank_no, &(&1+1))
-    |> put_blocks(bank_no+1, blocks-1, bank_count)
+    |> List.update_at(bank_no, &(&1 + 1))
+    |> put_blocks(bank_no + 1, blocks - 1, bank_count)
   end
 end

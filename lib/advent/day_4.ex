@@ -1,10 +1,10 @@
 defmodule Advent.Day4 do
   def part1(input) do
     input
-    |> String.trim
+    |> String.trim()
     |> String.split("\n")
     |> Enum.filter(&valid_passphrase?/1)
-    |> Enum.count
+    |> Enum.count()
   end
 
   @doc """
@@ -24,16 +24,17 @@ defmodule Advent.Day4 do
   false
   """
   def part2(input) do
-    words = input
-    |> String.split
-    |> Stream.map(&String.to_charlist/1)
-    |> Enum.map(&Enum.sort/1)
+    words =
+      input
+      |> String.split()
+      |> Stream.map(&String.to_charlist/1)
+      |> Enum.map(&Enum.sort/1)
 
     length(Enum.uniq(words)) == length(words)
   end
 
   defp valid_passphrase?(string) do
-    words = String.split string
+    words = String.split(string)
     length(Enum.uniq(words)) == length(words)
   end
 end

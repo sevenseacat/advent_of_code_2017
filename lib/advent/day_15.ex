@@ -19,18 +19,21 @@ defmodule Advent.Day15 do
   end
 
   defp do_loop(_, _, iteration, iteration, count), do: count
+
   defp do_loop({a_val, a_divisor}, {b_val, b_divisor}, iteration, max_iteration, count) do
     a = next_val(a_val, @a_factor, a_divisor)
     b = next_val(b_val, @b_factor, b_divisor)
+
     do_loop(
       {a, a_divisor},
       {b, b_divisor},
-      iteration+1, max_iteration,
+      iteration + 1,
+      max_iteration,
       compare_values(<<a::little-32>>, <<b::little-32>>, count)
     )
   end
 
-  defp compare_values(<<a::16, _::binary>>, <<a::16, _::binary>>, count), do: count+1
+  defp compare_values(<<a::16, _::binary>>, <<a::16, _::binary>>, count), do: count + 1
   defp compare_values(_, _, count), do: count
 
   @doc """
