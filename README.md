@@ -18,8 +18,8 @@ day 3, part 1: 0.162555sec
 day 3, part 2: 0.020029sec
 day 4, part 1: 0.007009sec
 day 4, part 2: 0.010907sec
-day 5, part 1: 4.576387sec
-day 5, part 2: 538.960363sec
+day 5, part 1: 0.161443sec
+day 5, part 2: 10.937124sec
 day 6, part 1+2: 0.161496sec
 day 7, part 1: 0.146586sec
 day 7, part 2: 0.280371sec
