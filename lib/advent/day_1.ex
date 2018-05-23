@@ -13,7 +13,7 @@ defmodule Advent.Day1 do
   9
   """
   def part1(input) do
-    list = String.codepoints(input)
+    list = String.codepoints(String.trim(input))
     do_part1(list, list, 0)
   end
 
@@ -43,7 +43,7 @@ defmodule Advent.Day1 do
   12
   """
   def part2(input) do
-    list = String.codepoints(input)
+    list = String.codepoints(String.trim(input))
     {list1, list2} = Enum.split(list, div(length(list), 2))
     do_part2(list1, list2, 0) + do_part2(list2, list1, 0)
   end

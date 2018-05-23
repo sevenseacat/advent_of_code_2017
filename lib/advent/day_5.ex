@@ -53,4 +53,11 @@ defmodule Advent.Day5 do
       false -> move + 1
     end
   end
+
+  def parse_input(data) do
+    data
+    |> String.trim()
+    |> String.split()
+    |> Enum.map(&String.to_integer/1)
+  end
 end

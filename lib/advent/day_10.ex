@@ -4,14 +4,13 @@ defmodule Advent.Day10 do
   @doc """
   Run in a console like:
   ```
-  lengths = File.read!("lib/advent/data/day_10") |> String.trim |> String.split(",") |> Enum.map(&String.to_integer/1)
-  Day10.part1(Enum.to_list(0..255), lengths)
+  data(10) |> Day10.parse_input() |> Day10.part1(Enum.to_list(0..255))
   ```
 
-  iex> Day10.part1([0, 1, 2, 3, 4], [3, 4, 1, 5])
+  iex> Day10.part1([3, 4, 1, 5], [0, 1, 2, 3, 4])
   12
   """
-  def part1(input, lengths) do
+  def part1(lengths, input) do
     {input, 0, 0, lengths}
     |> do_parts
     |> elem(0)
@@ -110,5 +109,12 @@ defmodule Advent.Day10 do
       Enum.at(orig_list, rem(position + length - (orig_length - length) - 1, length(list)))
     )
     |> reverse(orig_list, rem(position + 1, length(list)), length - 1, orig_length)
+  end
+
+  def parse_input(data) do
+    data
+    |> String.trim()
+    |> String.split(",")
+    |> Enum.map(&String.to_integer/1)
   end
 end

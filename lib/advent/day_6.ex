@@ -50,4 +50,11 @@ defmodule Advent.Day6 do
     |> List.update_at(bank_no, &(&1 + 1))
     |> put_blocks(bank_no + 1, blocks - 1, bank_count)
   end
+
+  def parse_input(data) do
+    data
+    |> String.trim()
+    |> String.split()
+    |> Enum.map(&String.to_integer/1)
+  end
 end

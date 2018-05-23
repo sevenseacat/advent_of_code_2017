@@ -44,7 +44,7 @@ defmodule Advent.Day13 do
   end
 
   def do_part2(input, offset, layer_count) do
-    if offset > 0 && rem(offset, 1000) == 0, do: IO.puts(offset)
+    # if offset > 0 && rem(offset, 1000) == 0, do: IO.puts(offset)
     new_input = move(input, offset, 0, layer_count)
 
     if Enum.any?(new_input, & &1.caught) do
