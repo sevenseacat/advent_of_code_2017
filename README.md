@@ -8,8 +8,6 @@ My Elixir solutions for the [Advent of Code 2017](http://adventofcode.com/2017).
 
 If you're curious how long each of the solutions roughly takes to run.
 
-(I think I need to refactor day 13 part 2....)
-
 ```
 iex(1)> Advent.run_all
 day 1, part 1: 0.004334sec
@@ -35,7 +33,7 @@ day 11, part 2: 0.00232sec
 day 12, part 1: 0.07889sec
 day 12, part 2: 1.14072sec
 day 13, part 1: 0.002088sec
-day 13, part 2: 2463.653062sec
+day 13, part 2: 1.396826sec
 day 14, part 1: 48.260581sec
 day 14, part 2: 51.598768sec
 day 15, part 1: 7.658115sec
