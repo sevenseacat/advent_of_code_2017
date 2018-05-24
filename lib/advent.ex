@@ -1,12 +1,13 @@
 defmodule Advent do
   alias Advent.{Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8, Day9, Day10, Day11, Day12, Day13}
 
-  alias Advent.{Day14, Day15, Day16, Day17, Day18, Day182, Day19, Day20, Day21, Day22, Day23, Day24}
+  alias Advent.{Day14, Day15, Day16, Day17, Day18, Day182, Day19, Day20, Day21, Day22, Day23}
 
-  alias Advent.{Day25}
+  alias Advent.{Day24, Day25}
 
   def data(day_no, opts \\ []) do
-    filename = if opts[:test], do: "test/data/day_#{day_no}", else: "lib/advent/data/day_#{day_no}"
+    filename =
+      if opts[:test], do: "test/data/day_#{day_no}", else: "lib/advent/data/day_#{day_no}"
 
     data = File.read!(filename)
 
@@ -48,7 +49,7 @@ defmodule Advent do
       {17, 1, fn -> Day17.part1(386) end},
       {17, 2, fn -> Day17.part2(386) end},
       {18, 1, fn -> data(18, parse: true) |> Day18.part1() end},
-      {18, 2, fn -> data(18) |> Day182.parse_input |> Day182.run() end},
+      {18, 2, fn -> data(18) |> Day182.parse_input() |> Day182.run() end},
       {19, 1, fn -> data(19, parse: true) |> Day19.part1() end},
       {19, 2, fn -> data(19, parse: true) |> Day19.part2() end},
       {20, 1, fn -> data(20, parse: true) |> Day20.part1() end},
@@ -57,7 +58,8 @@ defmodule Advent do
       {21, 2, fn -> data(21) |> Day21.part1(18) end},
       {22, 1, fn -> data(22) |> Day22.part1(10000) end},
       {22, 2, fn -> data(22) |> Day22.part2(10_000_000) end},
-      {23, 1, fn -> data(23) |> Day23.part1() end}
+      {23, 1, fn -> data(23) |> Day23.part1() end},
+      {23, 2, fn -> Day23.part2() end}
     ]
     |> Enum.each(fn {day, part_no, fun} ->
       IO.puts("day #{day}, part #{part_no}: #{Benchmark.measure(fun) |> elem(0)}")

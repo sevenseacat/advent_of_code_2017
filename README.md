@@ -53,4 +53,5 @@ day 21, part 2: 6.975516sec
 day 22, part 1: 0.010595sec
 day 22, part 2: 12.939304sec
 day 23, part 1: 0.021686sec
+day 23, part 2: 0.012729sec
 ```
