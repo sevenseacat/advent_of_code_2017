@@ -61,7 +61,8 @@ defmodule Advent do
       {23, 1, fn -> data(23) |> Day23.part1() end},
       {23, 2, fn -> Day23.part2() end},
       {24, 1, fn -> data(24, parse: true) |> Day24.part1() end},
-      {24, 2, fn -> data(24, parse: true) |> Day24.part2() end}
+      {24, 2, fn -> data(24, parse: true) |> Day24.part2() end},
+      {25, 1, fn -> Day25.part1(Day25.rules(), 12_134_527) end}
     ]
     |> Enum.each(fn {day, part_no, fun} ->
       IO.puts("day #{day}, part #{part_no}: #{Benchmark.measure(fun) |> elem(0)}")
