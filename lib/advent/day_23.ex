@@ -135,4 +135,16 @@ defmodule Advent.Day23 do
       ArgumentError -> String.to_atom(val)
     end
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 23, part 1" => fn -> Advent.data(23) |> part1() end,
+        "day 23, part 2" => fn -> part2() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

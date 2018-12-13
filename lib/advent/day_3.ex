@@ -167,4 +167,16 @@ defmodule Advent.Day3 do
     |> Stream.filter(fn coordinate -> Enum.member?(to_find, {coordinate.x, coordinate.y}) end)
     |> Enum.take(4)
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 3, part 1" => fn -> part1(277_678) end,
+        "day 3, part 2" => fn -> part2(277_678) end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

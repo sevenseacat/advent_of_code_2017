@@ -39,4 +39,16 @@ defmodule Advent.Day2 do
       y -> div(x, y)
     end
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 2, part 1" => fn -> Advent.data(2) |> part1() end,
+        "day 2, part 2" => fn -> Advent.data(2) |> part2() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

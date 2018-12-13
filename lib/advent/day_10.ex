@@ -130,4 +130,16 @@ defmodule Advent.Day10 do
     |> String.split(",")
     |> Enum.map(&String.to_integer/1)
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 10, part 1" => fn -> Advent.data(10, parse: true) |> part1(Enum.to_list(0..255)) end,
+        "day 10, part 2" => fn -> Advent.data(10) |> String.trim() |> part2() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

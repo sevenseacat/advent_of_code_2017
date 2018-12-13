@@ -36,6 +36,8 @@ defmodule Advent.Day182.Program do
 
   def send_count(pid), do: GenServer.call(pid, :send_count)
 
+  def shutdown(pid), do: GenServer.cast(pid, :terminate)
+
   ### Callbacks
 
   def init(args), do: {:ok, args}
@@ -68,6 +70,10 @@ defmodule Advent.Day182.Program do
 
   def handle_cast({:set_other, other}, state) do
     {:noreply, %{state | other: other}}
+  end
+
+  def handle_cast(:terminate, state) do
+    {:stop, :normal, state}
   end
 
   ### Other internal code
@@ -142,7 +148,10 @@ defmodule Advent.Day182 do
 
     # Exit case - deadlock, both programs are waiting to be sent something
     if Program.waiting?(a) && Program.waiting?(b) do
-      [Program.send_count(a), Program.send_count(b)]
+      res = [Program.send_count(a), Program.send_count(b)]
+      Program.shutdown(a)
+      Program.shutdown(b)
+      res
     else
       do_run(a, b)
     end

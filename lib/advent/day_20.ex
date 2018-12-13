@@ -97,4 +97,16 @@ defmodule Advent.Day20 do
       acceleration: Enum.at(data, 2)
     }
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 20, part 1" => fn -> Advent.data(20, parse: true) |> part1() end,
+        "day 20, part 2" => fn -> Advent.data(20, parse: true) |> part2() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

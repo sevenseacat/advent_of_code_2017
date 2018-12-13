@@ -92,4 +92,16 @@ defmodule Advent.Day14 do
   defp calculate_hash(input, suffix) do
     Day10.part2("#{input}-#{suffix}")
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 14, part 1" => fn -> part1("nbysizxe", 128) end,
+        "day 14, part 2" => fn -> part2("nbysizxe", 128) end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

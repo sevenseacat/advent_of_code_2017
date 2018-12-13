@@ -55,4 +55,15 @@ defmodule Advent.Day25 do
 
     {negatives, positives}
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 25, part 1" => fn -> part1(rules(), 12_134_527) end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

@@ -55,4 +55,16 @@ defmodule Advent.Day12 do
       String.split(vals, ", ") |> Enum.map(&String.to_integer/1)
     )
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 12, part 1" => fn -> Advent.data(12, parse: true) |> part1(0) |> Enum.count() end,
+        "day 12, part 2" => fn -> Advent.data(12, parse: true) |> part2() |> Enum.count() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

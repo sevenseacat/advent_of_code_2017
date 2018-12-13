@@ -93,4 +93,18 @@ defmodule Advent.Day16 do
     [one, two] = String.split(rest, "/")
     {:partner, one, two}
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 16, part 1" => fn -> part1("abcdefghijklmnop", Advent.data(16, parse: true)) end,
+        "day 16, part 2" => fn ->
+          part2("abcdefghijklmnop", Advent.data(16, parse: true), 1_000_000_000)
+        end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

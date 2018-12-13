@@ -48,4 +48,16 @@ defmodule Advent.Day11 do
   end
 
   def calculate_distance({nw, ne}), do: Enum.max([abs(nw), abs(ne)])
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 11, part 1" => fn -> Advent.data(11) |> part1() end,
+        "day 11, part 2" => fn -> Advent.data(11) |> part2() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

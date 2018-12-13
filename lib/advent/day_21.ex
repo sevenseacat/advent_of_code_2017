@@ -134,4 +134,16 @@ defmodule Advent.Day21 do
     |> Enum.map(&String.split(&1, "/"))
     |> Rule.new()
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 21, part 1" => fn -> Advent.data(21) |> part1(5) end,
+        "day 21, part 2" => fn -> Advent.data(21) |> part1(18) end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

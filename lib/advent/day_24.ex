@@ -106,4 +106,16 @@ defmodule Advent.Day24 do
     |> Enum.map(&String.to_integer/1)
     |> List.to_tuple()
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 24, part 1" => fn -> Advent.data(24, parse: true) |> part1() end,
+        "day 24, part 2" => fn -> Advent.data(24, parse: true) |> part2() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

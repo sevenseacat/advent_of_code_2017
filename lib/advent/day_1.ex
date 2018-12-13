@@ -51,4 +51,16 @@ defmodule Advent.Day1 do
   defp do_part2([a | as], [a | bs], total), do: do_part2(as, bs, total + String.to_integer(a))
   defp do_part2([_ | as], [_ | bs], total), do: do_part2(as, bs, total)
   defp do_part2([], [], total), do: total
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 1, part 1" => fn -> Advent.data(1) |> part1() end,
+        "day 1, part 2" => fn -> Advent.data(1) |> part2() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

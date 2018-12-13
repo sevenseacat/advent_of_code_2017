@@ -118,4 +118,16 @@ defmodule Advent.Day22 do
 
     data
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 22, part 1" => fn -> Advent.data(22) |> part1(10000) end,
+        "day 22, part 2" => fn -> Advent.data(22) |> part2(10_000_000) end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

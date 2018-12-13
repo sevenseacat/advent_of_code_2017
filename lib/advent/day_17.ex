@@ -63,4 +63,16 @@ defmodule Advent.Day17 do
     new_position = rem(position + step, number) + 1
     {List.insert_at(list, new_position, number), new_position}
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 17, part 1" => fn -> part1(386) end,
+        "day 17, part 2" => fn -> part2(386) end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

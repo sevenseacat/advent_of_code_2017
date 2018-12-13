@@ -59,4 +59,15 @@ defmodule Advent.Day9 do
   def do_parts([_ | rest], {:garbage, _} = state, {score, cancelled}) do
     do_parts(rest, state, {score, cancelled + 1})
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 9, parts 1+2" => fn -> Advent.data(9) |> parts() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

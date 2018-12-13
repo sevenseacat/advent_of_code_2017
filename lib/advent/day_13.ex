@@ -99,4 +99,16 @@ defmodule Advent.Day13 do
     |> Enum.map(&String.split(&1, ": "))
     |> Enum.map(&Layer.new/1)
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 13, part 1" => fn -> Advent.data(13, parse: true) |> part1() end,
+        "day 13, part 2" => fn -> Advent.data(13, parse: true) |> part2() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

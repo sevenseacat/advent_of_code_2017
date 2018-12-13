@@ -97,4 +97,16 @@ defmodule Advent.Day8 do
 
   defp apply_operation(a, "inc", b), do: a + b
   defp apply_operation(a, "dec", b), do: a - b
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 8, part 1" => fn -> Advent.data(8) |> part1() end,
+        "day 8, part 2" => fn -> Advent.data(8) |> part2() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

@@ -63,4 +63,16 @@ defmodule Advent.Day15 do
     val = rem(val * factor, 2_147_483_647)
     if rem(val, divisor) != 0, do: next_val(val, factor, divisor), else: val
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 15, part 1" => fn -> part1(634, 301) end,
+        "day 15, part 2" => fn -> part2(634, 301) end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

@@ -121,4 +121,16 @@ defmodule Advent.Day19 do
     |> Map.put({x, y}, char)
     |> row_elems_to_map(chars, x + 1, y)
   end
+
+  def bench do
+    Benchee.run(
+      %{
+        "day 19, part 1" => fn -> Advent.data(19, parse: true) |> part1() end,
+        "day 19, part 2" => fn -> Advent.data(19, parse: true) |> part2() end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end

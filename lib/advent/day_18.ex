@@ -108,4 +108,19 @@ defmodule Advent.Day18 do
       "jgz" -> {:jump, one, two}
     end
   end
+
+  def bench do
+    # This is the only day which I needed two totally different solutions for.
+    Benchee.run(
+      %{
+        "day 18, part 1" => fn -> Advent.data(18, parse: true) |> part1() end,
+        "day 18, part 2" => fn ->
+          Advent.data(18) |> Advent.Day182.parse_input() |> Advent.Day182.run()
+        end
+      },
+      Application.get_env(:advent, :benchee)
+    )
+
+    :ok
+  end
 end
